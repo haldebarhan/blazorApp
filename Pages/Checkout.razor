@@ -4,22 +4,6 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<div class="top-bar">
-    <a class="logo" href="">
-        <img src="img/logo.svg" />
-    </a>
-
-    <NavLink href="" class="nav-tab" Match="NavLinkMatch.All">
-        <img src="img/pizza-slice.svg" />
-        <div>Get Pizza</div>
-    </NavLink>
-
-    <NavLink href="myorders" class="nav-tab">
-        <img src="img/bike.svg" />
-        <div>My Orders</div>
-    </NavLink>
-</div>
-
 <div class="main">
     <div class="checkout-cols">
         <div class="checkout-order-details">
@@ -30,7 +14,7 @@
                     <strong>
                         @(pizza.Size)"
                         @pizza.Special.Name
-                        (£@pizza.GetFormattedTotalPrice())
+                        (@pizza.GetFormattedTotalPrice() F)
                     </strong>
                 </p>
             }
@@ -38,7 +22,7 @@
             <p>
                 <strong>
                     Total price:
-                    £@Order.GetFormattedTotalPrice()
+                    @Order.GetFormattedTotalPrice() F
                 </strong>
             </p>
         </div>
@@ -50,7 +34,7 @@
 </div>
 
 @code {
-    Order Order => OrderState.Order;
+    Order Order => OrderState.Order; 
     bool isSubmitting;
 
     async Task PlaceOrder()
@@ -59,6 +43,6 @@
         var response = await HttpClient.PostAsJsonAsync($"{NavigationManager.BaseUri}orders", OrderState.Order);
         var newOrderId = await response.Content.ReadFromJsonAsync<int>();
         OrderState.ResetOrder();
-        NavigationManager.NavigateTo("/myorders");
+        NavigationManager.NavigateTo($"myorders/{newOrderId}");
     }
 }

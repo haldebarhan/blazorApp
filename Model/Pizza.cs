@@ -24,9 +24,11 @@ namespace BlazingPizza
 
         public List<PizzaTopping> Toppings { get; set; }
 
-        public decimal GetBasePrice()
+        public int GetBasePrice()
         {
-            return ((decimal)Size / (decimal)DefaultSize) * Special.BasePrice;
+            decimal sum = Size / (decimal)DefaultSize * Special.BasePrice;
+            int arrondi = (int)Math.Ceiling(sum);
+            return  arrondi;
         }
 
         public decimal GetTotalPrice()
@@ -36,7 +38,7 @@ namespace BlazingPizza
 
         public string GetFormattedTotalPrice()
         {
-            return GetTotalPrice().ToString("0.00");
+            return GetTotalPrice().ToString();
         }
     }
 }
